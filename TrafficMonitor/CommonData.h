@@ -61,6 +61,7 @@ struct DispStrings		//显示的文本
 	wstring down;
 	wstring cpu;
 	wstring memory;
+	wstring datetime;
 	void operator=(const DispStrings& disp_str)		//重载赋值运算符
 	{
 		//如果赋值的字符串是定义的无效字符串，则不赋值
@@ -72,6 +73,8 @@ struct DispStrings		//显示的文本
 			cpu = disp_str.cpu;
 		if (disp_str.memory != NONE_STR)
 			memory = disp_str.memory;
+		if (disp_str.datetime != NONE_STR)
+			datetime = disp_str.datetime;
 	}
 	bool IsInvalid() const
 	{
@@ -171,6 +174,7 @@ struct MainConfigData
 	bool m_use_log_scale{ false };			//“历史流量统计”对话框中绘制表示历史流量数值的矩形时是否使用对数比例
     HistoryTrafficViewType m_view_type{};
 	bool m_sunday_first{ true };			//是否将周日作为一周的第一天
+	bool m_show_date_time{ false };			//
 };
 
 //选项设置中“主窗口设置”和“任务栏窗口设置”中公共的数据（不使用此结构体创建对象）
@@ -191,7 +195,7 @@ struct PublicSettingData
 	wstring double_click_exe;	//鼠标双击动作为打开指定应用程序时，打开的程序路径
 };
 
-#define MAIN_WND_COLOR_NUM 4		//主窗口颜色数量
+#define MAIN_WND_COLOR_NUM 5		//主窗口颜色数量
 //选项设置中“主窗口设置”的数据
 struct MainWndSettingData : public PublicSettingData
 {
@@ -290,6 +294,11 @@ struct LayoutData
 	int memory_width_l;		//“内存”的宽度
 	Alignment memory_align_l;	//“内存”的对齐方式
 	bool show_memory_l;		//是否显示“内存”
+	int datetime_x_l;		//
+	int datetime_y_l;		//
+	int datetime_width_l;	//
+	Alignment datetime_align_l;	//
+	bool show_datetime_l;	//
 	int preview_x_l;		//在“选择皮肤”界面中预览图的x坐标
 	int preview_y_l;		//在“选择皮肤”界面中预览图的y坐标
 
@@ -316,6 +325,11 @@ struct LayoutData
 	int memory_width_s;		//“内存”的宽度
 	Alignment memory_align_s;	//“内存”的对齐方式
 	bool show_memory_s;		//是否显示“内存”
+	int datetime_x_s;		//
+	int datetime_y_s;		//
+	int datetime_width_s;	//
+	Alignment datetime_align_s;	//
+	bool show_datetime_s;	//
 	int preview_x_s;	//在“选择皮肤”界面中预览图的x坐标
 	int preview_y_s;	//在“选择皮肤”界面中预览图的y坐标
 };

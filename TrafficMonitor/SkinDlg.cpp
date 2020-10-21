@@ -61,10 +61,15 @@ void CSkinDlg::LoadSkinLayout(const wstring& cfg_path, LayoutData& layout_data)
 	layout_data.memory_y_l = theApp.DPI(ini.GetInt(_T("layout"), _T("memory_y_l"), 21));
 	layout_data.memory_width_l = theApp.DPI(ini.GetInt(_T("layout"), _T("memory_width_l"), 110));
 	layout_data.memory_align_l = static_cast<Alignment>(ini.GetInt(_T("layout"), _T("memory_align_l"), 0));
+	layout_data.datetime_x_l = theApp.DPI(ini.GetInt(_T("layout"), _T("datetime_x_l"), 150));
+	layout_data.datetime_y_l = theApp.DPI(ini.GetInt(_T("layout"), _T("datetime_y_l"), 21));
+	layout_data.datetime_width_l = theApp.DPI(ini.GetInt(_T("layout"), _T("datetime_width_l"), 108));
+	layout_data.datetime_align_l = static_cast<Alignment>(ini.GetInt(_T("layout"), _T("datetime_align_l"), 0));
 	layout_data.show_up_l = ini.GetBool(_T("layout"), _T("show_up_l"), true);
 	layout_data.show_down_l = ini.GetBool(_T("layout"), _T("show_down_l"), true);
 	layout_data.show_cpu_l = ini.GetBool(_T("layout"), _T("show_cpu_l"), true);
 	layout_data.show_memory_l = ini.GetBool(_T("layout"), _T("show_memory_l"), true);
+	layout_data.show_datetime_l = ini.GetBool(_T("layout"), _T("show_datetime_l"), false);
 	layout_data.preview_x_l = theApp.DPI(ini.GetInt(_T("layout"), _T("preview_x_l"), 0));
 	layout_data.preview_y_l = theApp.DPI(ini.GetInt(_T("layout"), _T("preview_y_l"), 47));
 
@@ -86,10 +91,15 @@ void CSkinDlg::LoadSkinLayout(const wstring& cfg_path, LayoutData& layout_data)
 	layout_data.memory_y_s = theApp.DPI(ini.GetInt(_T("layout"), _T("memory_y_s"), 0));
 	layout_data.memory_width_s = theApp.DPI(ini.GetInt(_T("layout"), _T("memory_width_s"), 0));
 	layout_data.memory_align_s = static_cast<Alignment>(ini.GetInt(_T("layout"), _T("memory_align_s"), 0));
+	layout_data.datetime_x_s = theApp.DPI(ini.GetInt(_T("layout"), _T("datetime_x_s"), 0));
+	layout_data.datetime_y_s = theApp.DPI(ini.GetInt(_T("layout"), _T("datetime_y_s"), 0));
+	layout_data.datetime_width_s = theApp.DPI(ini.GetInt(_T("layout"), _T("datetime_width_s"), 0));
+	layout_data.datetime_align_s = static_cast<Alignment>(ini.GetInt(_T("layout"), _T("datetime_align_s"), 0));
 	layout_data.show_up_s = ini.GetBool(_T("layout"), _T("show_up_s"), true);
 	layout_data.show_down_s = ini.GetBool(_T("layout"), _T("show_down_s"), true);
 	layout_data.show_cpu_s = ini.GetBool(_T("layout"), _T("show_cpu_s"), false);
 	layout_data.show_memory_s = ini.GetBool(_T("layout"), _T("show_memory_s"), false);
+	layout_data.show_datetime_s = ini.GetBool(_T("layout"), _T("show_datetime_s"), false);
 	layout_data.preview_x_s = theApp.DPI(ini.GetInt(_T("layout"), _T("preview_x_s"), 0));
 	layout_data.preview_y_s = theApp.DPI(ini.GetInt(_T("layout"), _T("preview_y_s"), 0));
 }

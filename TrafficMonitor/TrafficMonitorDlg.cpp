@@ -45,6 +45,7 @@ void CTrafficMonitorDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_STATIC_DOWN, m_disp_down);
 	DDX_Control(pDX, IDC_STATIC_CPU, m_disp_cpu);
 	DDX_Control(pDX, IDC_STATIC_MEMORY, m_disp_memory);
+	DDX_Control(pDX, IDC_STATIC_DATE_TIME, m_disp_date_time);
 }
 
 BEGIN_MESSAGE_MAP(CTrafficMonitorDlg, CDialogEx)
@@ -134,6 +135,15 @@ void CTrafficMonitorDlg::ShowInfo()
 	m_disp_cpu.SetWindowTextEx(str, (theApp.m_cfg_data.m_show_more_info ? m_layout_data.cpu_align_l : m_layout_data.cpu_align_s));
 	str.Format(format_str, (m_layout_data.no_text ? _T("") : theApp.m_main_wnd_data.disp_str.memory.c_str()), theApp.m_memory_usage);
 	m_disp_memory.SetWindowTextEx(str, (theApp.m_cfg_data.m_show_more_info ? m_layout_data.memory_align_l : m_layout_data.memory_align_s));
+
+	//SYSTEMTIME current_time, time;
+	//GetLocalTime(&current_time);
+	//time = CCommon::CompareSystemTime(current_time, m_start_time);
+	////str.Format(CCommon::LoadText(IDS_HOUR_MINUTE_SECOND), time.wHour, time.wMinute, time.wSecond);
+	//str.Format(_T("%02d:%02d:%02d"), time.wHour, time.wMinute, time.wSecond);
+	////str.Format(format_str, (m_layout_data.no_text ? _T("") : theApp.m_main_wnd_data.disp_str.datetime.c_str()), theApp.m_cpu_usage);
+	//m_disp_date_time.SetWindowTextEx(str, (theApp.m_cfg_data.m_show_more_info ? m_layout_data.datetime_align_l : m_layout_data.datetime_align_s));
+
 	//设置要显示的项目
 	if (theApp.m_cfg_data.m_show_more_info)
 	{
@@ -141,6 +151,7 @@ void CTrafficMonitorDlg::ShowInfo()
 		m_disp_down.ShowWindow(m_layout_data.show_down_l ? SW_SHOW : SW_HIDE);
 		m_disp_cpu.ShowWindow(m_layout_data.show_cpu_l ? SW_SHOW : SW_HIDE);
 		m_disp_memory.ShowWindow(m_layout_data.show_memory_l ? SW_SHOW : SW_HIDE);
+		m_disp_date_time.ShowWindow(m_layout_data.show_datetime_l ? SW_SHOW : SW_HIDE);
 	}
 	else
 	{
@@ -148,6 +159,7 @@ void CTrafficMonitorDlg::ShowInfo()
 		m_disp_down.ShowWindow(m_layout_data.show_down_s ? SW_SHOW : SW_HIDE);
 		m_disp_cpu.ShowWindow(m_layout_data.show_cpu_s ? SW_SHOW : SW_HIDE);
 		m_disp_memory.ShowWindow(m_layout_data.show_memory_s ? SW_SHOW : SW_HIDE);
+		m_disp_date_time.ShowWindow(m_layout_data.show_datetime_s ? SW_SHOW : SW_HIDE);
 	}
 }
 
@@ -648,6 +660,7 @@ void CTrafficMonitorDlg::SetItemPosition()
 		m_disp_down.MoveWindow(m_layout_data.down_x_l, m_layout_data.down_y_l, m_layout_data.down_width_l, m_layout_data.text_height);
 		m_disp_cpu.MoveWindow(m_layout_data.cpu_x_l, m_layout_data.cpu_y_l, m_layout_data.cpu_width_l, m_layout_data.text_height);
 		m_disp_memory.MoveWindow(m_layout_data.memory_x_l, m_layout_data.memory_y_l, m_layout_data.memory_width_l, m_layout_data.text_height);
+		m_disp_date_time.MoveWindow(m_layout_data.datetime_x_l, m_layout_data.datetime_y_l, m_layout_data.datetime_width_l, m_layout_data.text_height);
 	}
 	else
 	{
@@ -656,6 +669,7 @@ void CTrafficMonitorDlg::SetItemPosition()
 		m_disp_down.MoveWindow(m_layout_data.down_x_s, m_layout_data.down_y_s, m_layout_data.down_width_s, m_layout_data.text_height);
 		m_disp_cpu.MoveWindow(m_layout_data.cpu_x_s, m_layout_data.cpu_y_s, m_layout_data.cpu_width_s, m_layout_data.text_height);
 		m_disp_memory.MoveWindow(m_layout_data.memory_x_s, m_layout_data.memory_y_s, m_layout_data.memory_width_s, m_layout_data.text_height);
+		m_disp_date_time.MoveWindow(m_layout_data.datetime_x_s, m_layout_data.datetime_y_s, m_layout_data.datetime_width_s, m_layout_data.text_height);
 	}
 }
 
@@ -732,6 +746,7 @@ void CTrafficMonitorDlg::SetTextColor()
 	m_disp_down.SetTextColor(text_colors[1]);
 	m_disp_cpu.SetTextColor(text_colors[2]);
 	m_disp_memory.SetTextColor(text_colors[3]);
+	m_disp_date_time.SetTextColor(text_colors[4]);
 }
 
 void CTrafficMonitorDlg::SetTextFont()
@@ -757,6 +772,7 @@ void CTrafficMonitorDlg::SetTextFont()
 	m_disp_memory.SetFont(&m_font);
 	m_disp_up.SetFont(&m_font);
 	m_disp_down.SetFont(&m_font);
+	m_disp_date_time.SetFont(&m_font);
 }
 
 bool CTrafficMonitorDlg::IsTaskbarWndValid() const
@@ -930,8 +946,7 @@ void CTrafficMonitorDlg::OnTimer(UINT_PTR nIDEvent)
         unsigned __int64 cur_in_speed{}, cur_out_speed{};       //本次监控时间间隔内的上传和下载速度
 
 		//如果发送和接收的字节数为0或上次发送和接收的字节数为0或当前连接已改变时，网速无效
-		if ((m_in_bytes == 0 && m_out_bytes == 0) || (m_last_in_bytes == 0 && m_last_out_bytes == 0) || m_connection_change_flag
-            || m_last_in_bytes > m_in_bytes || m_last_out_bytes > m_out_bytes)
+		if ((m_in_bytes == 0 && m_out_bytes == 0) || (m_last_in_bytes == 0 && m_last_out_bytes == 0) || m_connection_change_flag)
 		{
 			cur_in_speed = 0;
 			cur_out_speed = 0;
@@ -984,6 +999,10 @@ void CTrafficMonitorDlg::OnTimer(UINT_PTR nIDEvent)
 			theApp.m_today_up_traffic = 0;
 			theApp.m_today_down_traffic = 0;
 		}
+
+		CString str;
+		str.Format(_T("%02d:%02d:%02d"), current_time.wHour, current_time.wMinute, current_time.wSecond);
+		m_disp_date_time.SetWindowTextEx(str, (theApp.m_cfg_data.m_show_more_info ? m_layout_data.datetime_align_l : m_layout_data.datetime_align_s));
 
 		//统计今天已使用的流量
 		theApp.m_today_up_traffic += cur_out_speed;
@@ -1824,7 +1843,6 @@ void CTrafficMonitorDlg::OnDestroy()
 	::Shell_NotifyIcon(NIM_DELETE, &m_ntIcon);
 	// TODO: 在此处添加消息处理程序代码
 }
-
 
 void CTrafficMonitorDlg::OnShowCpuMemory()
 {

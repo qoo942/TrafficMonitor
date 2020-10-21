@@ -67,6 +67,7 @@ protected:
 	CStaticEx m_disp_down;	//显示下载的文本控件
 	CStaticEx m_disp_cpu;	//显示CPU利用率的文本控件
 	CStaticEx m_disp_memory;	//显示内存利用率的文本控件
+	CStaticEx m_disp_date_time;	//显示内存利用率的文本控件
 
 	CFont m_font;			//字体
 
